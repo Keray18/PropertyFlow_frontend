@@ -4,6 +4,7 @@ import Chip from "@mui/material/Chip";
 
 type StatusVariant =
   | "connected"
+  | "connecting"
   | "disconnected"
   | "active"
   | "inactive"
@@ -25,6 +26,7 @@ const STATUS_CONFIG: Record<
   StatusVariant,
   { label: string; color: "default" | "primary" | "secondary" | "error" | "info" | "success" | "warning" }
 > = {
+  connecting: { label: "Connecting...", color: "info" },
   connected: { label: "WhatsApp Connected", color: "success" },
   disconnected: { label: "WhatsApp Not Connected", color: "warning" },
   active: { label: "Active", color: "success" },

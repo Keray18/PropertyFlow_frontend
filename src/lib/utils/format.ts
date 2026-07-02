@@ -50,10 +50,3 @@ export function isToday(dateString: string): boolean {
 export function getDealerName(firstName: string, lastName: string): string {
   return `${firstName} ${lastName}`.trim();
 }
-
-export function isWhatsAppConnected(titan: {
-  metaPhoneNumberId?: string | null;
-  metaAccessToken?: string | null;
-}): boolean {
-  return Boolean(titan.metaPhoneNumberId && titan.metaAccessToken);
-}

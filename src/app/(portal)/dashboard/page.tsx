@@ -12,6 +12,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import HomeWorkIcon from "@mui/icons-material/HomeWork";
 import MetricCard from "@/components/MetricCard";
 import LoadingScreen from "@/components/LoadingScreen";
+import WhatsAppConnectionCard from "@/components/WhatsAppConnectionCard";
 import { getLeadsByTitan } from "@/lib/api/leads";
 import { getPropertiesByTitan } from "@/lib/api/properties";
 import { computeDashboardMetrics } from "@/lib/utils/dashboard";
@@ -19,7 +20,7 @@ import { useTitan } from "@/context/TitanContext";
 import type { DashboardMetrics } from "@/lib/types";
 
 export default function DashboardPage() {
-  const { titanId, loading: authLoading } = useTitan();
+  const { titanId, titan, loading: authLoading } = useTitan();
   const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -72,6 +73,15 @@ export default function DashboardPage() {
       )}
 
       <Grid container spacing={2.5}>
+        {titan && (
+          <Grid size={{ xs: 12 }}>
+            <WhatsAppConnectionCard
+              titanId={titan._id}
+              registeredPhone={titan.whatsappNumber}
+              compact
+            />
+          </Grid>
+        )}
         <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
           <MetricCard
             title="Today's Leads"

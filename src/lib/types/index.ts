@@ -117,7 +117,18 @@ export interface SystemHealth {
   overall: "healthy" | "warning" | "offline";
   checkedAt: string;
   pendingMessages: number;
+  activeWhatsAppSessions?: number;
   services: HealthCheck[];
+}
+
+export type WhatsAppConnectionStatus = "connected" | "connecting" | "disconnected";
+
+export interface WhatsAppStatusResponse {
+  status: WhatsAppConnectionStatus;
+  phone?: string | null;
+  linked?: boolean;
+  hasQr?: boolean;
+  lastConnectedAt?: string | null;
 }
 
 export interface MatchingWeights {

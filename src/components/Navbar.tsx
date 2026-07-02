@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -10,7 +11,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
 import StatusChip from "./StatusChip";
 import { useTitan } from "@/context/TitanContext";
-import { getDealerName, isWhatsAppConnected } from "@/lib/utils/format";
+import { getDealerName } from "@/lib/utils/format";
+import { getWhatsAppStatus, type WhatsAppConnectionStatus } from "@/lib/api/whatsapp";
 
 interface NavbarProps {
   onMenuClick: () => void;
@@ -18,12 +20,42 @@ interface NavbarProps {
 
 export default function Navbar({ onMenuClick }: NavbarProps) {
   const { titan, loading, logout } = useTitan();
+  const [whatsappStatus, setWhatsappStatus] = useState<WhatsAppConnectionStatus>("disconnected");
+
+  useEffect(() => {
+    if (!titan?._id) return;
+
+    let active = true;
+
+    const loadStatus = async () => {
+      try {
+        const data = await getWhatsAppStatus(titan._id);
+        if (active) setWhatsappStatus(data.status);
+      } catch {
+        if (active) setWhatsappStatus("disconnected");
+      }
+    };
+
+    loadStatus();
+    const interval = setInterval(loadStatus, 15000);
+
+    return () => {
+      active = false;
+      clearInterval(interval);
+    };
+  }, [titan?._id]);
 
   const dealerName = titan
     ? getDealerName(titan.firstName, titan.lastName)
     : "Dealer";
   const businessName = titan?.businessName || "Your Business";
-  const whatsappConnected = titan ? isWhatsAppConnected(titan) : false;
+
+  const statusVariant =
+    whatsappStatus === "connected"
+      ? "connected"
+      : whatsappStatus === "connecting"
+        ? "connecting"
+        : "disconnected";
 
   return (
     <AppBar
@@ -57,11 +89,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            {!loading && (
-              <StatusChip
-                variant={whatsappConnected ? "connected" : "disconnected"}
-              />
-            )}
+            {!loading && <StatusChip variant={statusVariant} />}
           </Box>
           {!loading && (
             <Button

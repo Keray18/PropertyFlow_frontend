@@ -10,9 +10,10 @@ import Divider from "@mui/material/Divider";
 import Alert from "@mui/material/Alert";
 import LoadingScreen from "@/components/LoadingScreen";
 import StatusChip from "@/components/StatusChip";
+import WhatsAppConnectionCard from "@/components/WhatsAppConnectionCard";
 import { getBillingStatus } from "@/lib/api/billing";
 import { useTitan } from "@/context/TitanContext";
-import { formatCurrency, formatDate, formatPhone, getDealerName, isWhatsAppConnected } from "@/lib/utils/format";
+import { formatCurrency, formatDate, formatPhone, getDealerName } from "@/lib/utils/format";
 import type { BillingInfo } from "@/lib/types";
 
 function ProfileRow({ label, value }: { label: string; value: string }) {
@@ -61,7 +62,6 @@ export default function ProfilePage() {
     return <Alert severity="error">{error || "Could not load your profile."}</Alert>;
   }
 
-  const whatsappConnected = isWhatsAppConnected(titan);
   const billingVariant = billing?.billingStatus || "pending";
 
   return (
@@ -110,24 +110,21 @@ export default function ProfilePage() {
                 Account Status
               </Typography>
               <Divider sx={{ mb: 2 }} />
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                <Box>
-                  <Typography variant="caption" color="text.secondary" sx={{ display: "block", mb: 1 }}>
-                    Account
-                  </Typography>
-                  <StatusChip variant={titan.active ? "active" : "inactive"} />
-                </Box>
-                <Box>
-                  <Typography variant="caption" color="text.secondary" sx={{ display: "block", mb: 1 }}>
-                    WhatsApp Connection
-                  </Typography>
-                  <StatusChip
-                    variant={whatsappConnected ? "connected" : "disconnected"}
-                  />
-                </Box>
+              <Box>
+                <Typography variant="caption" color="text.secondary" sx={{ display: "block", mb: 1 }}>
+                  Account
+                </Typography>
+                <StatusChip variant={titan.active ? "active" : "inactive"} />
               </Box>
             </CardContent>
           </Card>
+        </Grid>
+
+        <Grid size={{ xs: 12 }}>
+          <WhatsAppConnectionCard
+            titanId={titan._id}
+            registeredPhone={titan.whatsappNumber}
+          />
         </Grid>
 
         <Grid size={{ xs: 12 }}>
