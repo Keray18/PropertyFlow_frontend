@@ -11,9 +11,6 @@ export interface Titan {
   lastName: string;
   whatsappNumber: string;
   businessName: string | null;
-  metaPhoneNumberId?: string | null;
-  metaWabaId?: string | null;
-  metaAccessToken?: string | null;
   active: boolean;
   setupFeePaid?: boolean;
   subscriptionPlan?: string;
@@ -65,13 +62,6 @@ export interface Lead {
   updatedAt: string;
 }
 
-export interface TitanDetails {
-  titan: Titan;
-  properties: Property[];
-  leads: Lead[];
-  recentConversations: unknown[];
-}
-
 export interface PropertyFormData {
   propertyType: string;
   bhk: string;
@@ -119,16 +109,6 @@ export interface SystemHealth {
   pendingMessages: number;
   activeWhatsAppSessions?: number;
   services: HealthCheck[];
-}
-
-export type WhatsAppConnectionStatus = "connected" | "connecting" | "disconnected";
-
-export interface WhatsAppStatusResponse {
-  status: WhatsAppConnectionStatus;
-  phone?: string | null;
-  linked?: boolean;
-  hasQr?: boolean;
-  lastConnectedAt?: string | null;
 }
 
 export interface MatchingWeights {

@@ -216,7 +216,7 @@ export default function SettingsPage() {
                     maxPropertiesPerMessage: Math.max(1, Number(event.target.value) || 1),
                   })
                 }
-                inputProps={{ min: 1, max: 20 }}
+                slotProps={{ htmlInput: { min: 1, max: 20 } }}
                 helperText="Used when BuyerBot sends matching properties (default: 5)."
               />
             </CardContent>
@@ -280,7 +280,7 @@ export default function SettingsPage() {
                       type="number"
                       value={weights[field.key]}
                       onChange={(event) => updateWeight(field.key, event.target.value)}
-                      inputProps={{ min: 0, max: 100 }}
+                      slotProps={{ htmlInput: { min: 0, max: 100 } }}
                     />
                   </Grid>
                 ))}
