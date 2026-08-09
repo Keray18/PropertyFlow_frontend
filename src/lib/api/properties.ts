@@ -10,14 +10,14 @@ export async function getPropertiesByTitan(titanId: string): Promise<Property[]>
 
 export async function createProperty(
   titanId: string,
-  payload: PropertyFormData
+  payload: Omit<PropertyFormData, "status"> & { status: string }
 ): Promise<Property> {
   const { data } = await apiClient.post<ApiResponse<Property>>(
     "/api/properties",
     {
       titanId,
       ...payload,
-      budget: Number(payload.budget),
+      price: Number(payload.price),
     }
   );
   return data.data;
@@ -25,11 +25,11 @@ export async function createProperty(
 
 export async function updateProperty(
   id: string,
-  payload: Partial<PropertyFormData> & { active?: boolean }
+  payload: Partial<Omit<PropertyFormData, "status"> & { status: string }> & { active?: boolean }
 ): Promise<Property> {
   const body = { ...payload };
-  if (body.budget !== undefined && body.budget !== "") {
-    body.budget = Number(body.budget);
+  if (body.price !== undefined && body.price !== "") {
+    body.price = Number(body.price);
   }
   const { data } = await apiClient.put<ApiResponse<Property>>(
     `/api/properties/${id}`,
@@ -40,4 +40,33 @@ export async function updateProperty(
 
 export async function deleteProperty(id: string): Promise<void> {
   await apiClient.delete(`/api/properties/${id}`);
+}
+
+export async function uploadPropertyMedia(
+  file: File,
+  onProgress?: (progressEvent: any) => void
+): Promise<any> {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const { data } = await apiClient.post<ApiResponse<any>>(
+    "/api/properties/media",
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      onUploadProgress: onProgress,
+    }
+  );
+  return data.data;
+}
+
+export async function deletePropertyMedia(
+  publicId: string,
+  resourceType: "image" | "video" = "image"
+): Promise<void> {
+  await apiClient.delete("/api/properties/media", {
+    data: { publicId, resourceType },
+  });
 }

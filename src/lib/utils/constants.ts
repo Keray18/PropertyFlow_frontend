@@ -2,10 +2,46 @@ export const PROPERTY_TYPES = [
   "Apartment",
   "Villa",
   "Independent House",
-  "Plot",
-  "Commercial",
+  "Plot / Land",
   "Office Space",
   "Shop",
+  "Warehouse",
+  "Commercial Building",
+] as const;
+
+export const AMENITIES = [
+  "Lift",
+  "Parking",
+  "Power Backup",
+  "Swimming Pool",
+  "Club House",
+  "Gym",
+  "Garden",
+  "Security",
+  "CCTV",
+  "Visitor Parking",
+  "Pet Friendly",
+  "Metro Nearby",
+  "School Nearby",
+  "Hospital Nearby",
+  "Market Nearby",
+] as const;
+
+export const PROPERTY_STATUS = [
+  "Available",
+  "Sold",
+  "Rented",
+  "Inactive",
+] as const;
+
+export const AREA_UNITS = [
+  "Sq Ft",
+  "Sq Yard (Gaj)",
+  "Acre",
+  "Bigha",
+  "Kanal",
+  "Marla",
+  "Other",
 ] as const;
 
 export const BHK_OPTIONS = ["1", "2", "3", "4", "5+"] as const;

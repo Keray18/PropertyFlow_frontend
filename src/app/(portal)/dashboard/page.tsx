@@ -27,10 +27,6 @@ export default function DashboardPage() {
 
   useEffect(() => {
     async function loadDashboard() {
-      if (!titanId) {
-        return;
-      }
-
       try {
         setLoading(true);
         setError(null);
@@ -48,8 +44,12 @@ export default function DashboardPage() {
       }
     }
 
-    if (!authLoading && titanId) {
-      loadDashboard();
+    if (!authLoading) {
+      if (titanId) {
+        loadDashboard();
+      } else {
+        setLoading(false);
+      }
     }
   }, [titanId, authLoading]);
 

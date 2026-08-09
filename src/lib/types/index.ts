@@ -21,18 +21,43 @@ export interface Titan {
   updatedAt: string;
 }
 
+export interface PropertyMedia {
+  publicId: string;
+  url: string;
+  width?: number;
+  height?: number;
+  duration?: number;
+  format?: string;
+  bytes?: number;
+}
+
 export interface Property {
   _id: string;
   titanId: string;
   propertyType: string;
-  bhk: string;
-  budget: number;
+  purpose: "Sale" | "Rent";
+  budget: number; // Mapped to 'price' in the backend schema logic, but we can type it as budget if backend sends it as budget
+  price?: number; // Some parts of the frontend might expect price based on our changes, we'll keep budget and price in sync
+  negotiable: boolean;
+  bhk?: string;
   city: string;
   locality: string;
+  fullAddress: string;
   description: string;
-  images: string[];
-  videos: string[];
+  availability: "Ready" | "Available From Date";
+  availableFrom?: string;
+  images: (string | PropertyMedia)[];
+  videos: (string | PropertyMedia)[];
+  ownerName: string;
+  ownerPhone: string;
+  alternatePhone: string;
+  internalNotes: string;
+  landmark: string;
+  googleMapsLink: string;
+  amenities: string[];
+  status: "Active" | "Sold" | "Rented" | "On Hold" | "Expired";
   active: boolean;
+  details: Record<string, unknown>;
   createdAt: string;
   updatedAt: string;
 }
@@ -64,11 +89,23 @@ export interface Lead {
 
 export interface PropertyFormData {
   propertyType: string;
+  purpose: "Sale" | "Rent";
   bhk: string;
-  budget: number | "";
+  price: number | "";
+  negotiable: boolean;
   city: string;
   locality: string;
   description: string;
+  availability: "Ready" | "Available From Date";
+  availableFrom: string;
+  images: (string | PropertyMedia)[];
+  videos: (string | PropertyMedia)[];
+  ownerName: string;
+  ownerPhone: string;
+  alternatePhone: string;
+  internalNotes: string;
+  status: "Active" | "Sold" | "Rented" | "On Hold" | "Expired";
+  details: Record<string, unknown>;
 }
 
 export type LeadFilter =

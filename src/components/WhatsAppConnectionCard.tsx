@@ -110,7 +110,7 @@ export default function WhatsAppConnectionCard({
     };
 
     poll();
-    pollRef.current = setInterval(poll, 1000);
+    pollRef.current = setInterval(poll, 3000);
 
     return () => {
       if (pollRef.current) clearInterval(pollRef.current);
@@ -224,7 +224,7 @@ export default function WhatsAppConnectionCard({
               )}
 
               <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, pt: 1 }}>
-                {status === "disconnected" && (
+                {statusVariant === "disconnected" && (
                   <Button
                     variant="contained"
                     onClick={handleConnect}
@@ -234,7 +234,7 @@ export default function WhatsAppConnectionCard({
                   </Button>
                 )}
 
-                {status === "connecting" && (
+                {statusVariant === "connecting" && (
                   <>
                     <Button variant="outlined" onClick={() => setQrOpen(true)} disabled={actionLoading}>
                       Show QR Code
@@ -245,7 +245,7 @@ export default function WhatsAppConnectionCard({
                   </>
                 )}
 
-                {status === "connected" && (
+                {statusVariant === "connected" && (
                   <>
                     <Button variant="outlined" onClick={handleReconnect} disabled={actionLoading}>
                       Reconnect

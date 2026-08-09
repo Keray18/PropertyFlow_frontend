@@ -1,6 +1,6 @@
 import apiClient from "./client";
 
-export type WhatsAppConnectionStatus = "connected" | "connecting" | "disconnected";
+export type WhatsAppConnectionStatus = "connected" | "connecting" | "disconnected" | "uninitialized";
 
 export interface WhatsAppStatusResponse {
   success?: boolean;

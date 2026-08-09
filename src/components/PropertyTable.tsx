@@ -58,12 +58,13 @@ export default function PropertyTable({
       if (bhkFilter && property.bhk !== bhkFilter) return false;
       if (typeFilter && property.propertyType !== typeFilter) return false;
 
+      const propertyPrice = property.price || property.budget;
       if (budgetFilter === "under50") {
-        if (property.budget >= 5000000) return false;
+        if (propertyPrice >= 5000000) return false;
       } else if (budgetFilter === "50to1cr") {
-        if (property.budget < 5000000 || property.budget >= 10000000) return false;
+        if (propertyPrice < 5000000 || propertyPrice >= 10000000) return false;
       } else if (budgetFilter === "above1cr") {
-        if (property.budget < 10000000) return false;
+        if (propertyPrice < 10000000) return false;
       }
 
       if (!query) return true;
@@ -72,8 +73,8 @@ export default function PropertyTable({
         property.propertyType,
         property.city,
         property.locality,
-        property.bhk,
-        formatCurrency(property.budget),
+        property.bhk || "",
+        formatCurrency(propertyPrice),
       ]
         .join(" ")
         .toLowerCase();
@@ -82,7 +83,7 @@ export default function PropertyTable({
     });
   }, [properties, search, cityFilter, bhkFilter, typeFilter, budgetFilter]);
 
-  const handleSave = async (data: PropertyFormData) => {
+  const handleSave = async (data: Omit<PropertyFormData, "status"> & { status: string }) => {
     try {
       setLoading(true);
       setError(null);
@@ -131,13 +132,14 @@ export default function PropertyTable({
         field: "bhk",
         headerName: "BHK",
         width: 80,
-        valueFormatter: (value: string) => `${value} BHK`,
+        valueFormatter: (value: string) => value ? `${value} BHK` : "-",
       },
       {
-        field: "budget",
-        headerName: "Budget",
+        field: "price",
+        headerName: "Price",
         flex: 1,
         minWidth: 110,
+        valueGetter: (_value: unknown, row: Property) => row.price || row.budget,
         valueFormatter: (value: number) => formatCurrency(value),
       },
       {
