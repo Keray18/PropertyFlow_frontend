@@ -100,6 +100,10 @@ export default function WhatsAppConnectionCard({
           setQrOpen(false);
           setQrImage(null);
           showMessage("WhatsApp connected successfully.");
+        } else if (statusRes.status === "disconnected") {
+          setQrOpen(false);
+          setQrImage(null);
+          showMessage("WhatsApp connection failed or disconnected. Please try again.", "error");
         }
       } catch (err) {
         showMessage(

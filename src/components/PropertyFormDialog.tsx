@@ -38,7 +38,7 @@ const emptyForm: PropertyFormData = {
   ownerPhone: "",
   alternatePhone: "",
   internalNotes: "",
-  status: "Available",
+  status: "Active",
   details: {
     areaValue: "",
     areaUnit: "Sq Ft",
@@ -72,11 +72,11 @@ export default function PropertyFormDialog({
     if (open) {
       if (property) {
         // Edit mode mapping
-        let uiStatus: PropertyFormData["status"] = "Available";
+        let uiStatus: PropertyFormData["status"] = "Active";
         if (property.status === "Sold" || property.status === "Rented") {
           uiStatus = property.status;
         } else if (property.status === "Expired" || property.status === "On Hold") {
-          uiStatus = "Inactive";
+          uiStatus = property.status;
         }
 
         setForm({
@@ -149,7 +149,6 @@ export default function PropertyFormDialog({
     let backendStatus = "Active";
     if (form.status === "Sold") backendStatus = "Sold";
     if (form.status === "Rented") backendStatus = "Rented";
-    if (form.status === "Inactive") backendStatus = "Expired";
 
     const dataToSubmit = {
       ...form,

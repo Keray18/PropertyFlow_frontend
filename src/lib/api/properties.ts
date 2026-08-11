@@ -44,11 +44,14 @@ export async function deleteProperty(id: string): Promise<void> {
 
 export async function uploadPropertyMedia(
   file: File,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onProgress?: (progressEvent: any) => void
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
   const formData = new FormData();
   formData.append("file", file);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data } = await apiClient.post<ApiResponse<any>>(
     "/api/properties/media",
     formData,
