@@ -20,7 +20,7 @@ interface NavbarProps {
 
 export default function Navbar({ onMenuClick }: NavbarProps) {
   const { titan, loading, logout } = useTitan();
-  const [whatsappStatus, setWhatsappStatus] = useState<WhatsAppConnectionStatus>("disconnected");
+  const [whatsappStatus, setWhatsappStatus] = useState<WhatsAppConnectionStatus>("NOT_CONNECTED");
 
   useEffect(() => {
     if (!titan?._id) return;
@@ -32,16 +32,14 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
         const data = await getWhatsAppStatus(titan._id);
         if (active) setWhatsappStatus(data.status);
       } catch {
-        if (active) setWhatsappStatus("disconnected");
+        if (active) setWhatsappStatus("NOT_CONNECTED");
       }
     };
 
     loadStatus();
-    const interval = setInterval(loadStatus, 15000);
 
     return () => {
       active = false;
-      clearInterval(interval);
     };
   }, [titan?._id]);
 
@@ -50,12 +48,9 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
     : "Dealer";
   const businessName = titan?.businessName || "Your Business";
 
-  const statusVariant =
-    whatsappStatus === "connected"
-      ? "connected"
-      : whatsappStatus === "connecting"
-        ? "connecting"
-        : "disconnected";
+  const isConnected = whatsappStatus === "CONNECTED";
+  const statusLabel = isConnected ? "Connected" : "Not Connected";
+  const statusColor = isConnected ? "success" : "default";
 
   return (
     <AppBar
@@ -89,7 +84,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            {!loading && <StatusChip variant={statusVariant} />}
+            {!loading && <StatusChip variant="connected" label={statusLabel} color={statusColor} />}
           </Box>
           {!loading && (
             <Button

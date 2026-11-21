@@ -13,6 +13,7 @@ apiClient.interceptors.response.use(
   (error) => {
     const status = error.response?.status;
     const message =
+      error.response?.data?.error?.message ||
       error.response?.data?.message ||
       error.message ||
       "Something went wrong. Please try again.";

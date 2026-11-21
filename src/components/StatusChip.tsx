@@ -49,15 +49,17 @@ const STATUS_CONFIG: Record<
 interface StatusChipProps {
   variant: StatusVariant;
   size?: "small" | "medium";
+  label?: string;
+  color?: "default" | "primary" | "secondary" | "error" | "info" | "success" | "warning";
 }
 
-export default function StatusChip({ variant, size = "small" }: StatusChipProps) {
+export default function StatusChip({ variant, size = "small", label, color }: StatusChipProps) {
   const config = STATUS_CONFIG[variant];
 
   return (
     <Chip
-      label={config.label}
-      color={config.color}
+      label={label || config.label}
+      color={color || config.color}
       size={size}
       variant="outlined"
     />

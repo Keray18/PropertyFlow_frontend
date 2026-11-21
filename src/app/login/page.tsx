@@ -103,8 +103,7 @@ export default function LoginPage() {
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
               <TextField
                 fullWidth
-                label="WhatsApp Number"
-                placeholder="+91 98765 43210"
+                label="WhatsApp Number (e.g. +91 98765 43210)"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
@@ -112,7 +111,7 @@ export default function LoginPage() {
                 fullWidth
                 variant="contained"
                 size="large"
-                disabled={loading || phoneNumber.trim().length < 10}
+                disabled={loading}
                 onClick={handleSendOtp}
               >
                 Send OTP
